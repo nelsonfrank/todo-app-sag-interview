@@ -1,42 +1,35 @@
+"use client";
+
 import Link from "next/link";
 import {
   BookCheck,
-  Bell,
   Inbox,
   Calendar,
   CalendarDays,
   LineChart,
   Menu,
-  LucideIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
-import { Badge } from "../ui/badge";
-import { cn } from "~/lib/utils";
-import { ReactNode } from "react";
+import { NavItem } from "./nav/nav-item";
 
 const navigationItems = [
   {
     Icon: Inbox,
     title: "Inbox",
-    childComp: (
-      <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-        6
-      </Badge>
-    ),
+    href: "/inbox",
+    badgeText: "6",
   },
   {
     Icon: Calendar,
     title: "Today",
+    href: "/today",
   },
   {
     Icon: CalendarDays,
     title: "Upcoming",
-  },
-  {
-    Icon: LineChart,
-    title: "Analytics",
+    href: "/upcoming",
   },
 ];
 
@@ -49,14 +42,20 @@ export function MainSideBar() {
             type="other"
             title={item.title}
             Icon={item.Icon}
-            childComp={item.childComp}
+            href={item.href}
+            badgeText={item.badgeText}
             key={index + 1}
           />
         ))}
       </nav>
       <Separator className="my-2" />
       <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-        <NavItem type="other" title={"Analytics"} Icon={LineChart} />
+        <NavItem
+          type="other"
+          title={"Analytics"}
+          Icon={LineChart}
+          href="/analytics"
+        />
       </nav>
     </div>
   );
@@ -80,71 +79,27 @@ export function MobileSideBarNav() {
             <BookCheck className="h-6 w-6" />
             <span className="sr-only">DoList</span>
           </Link>
-          <Link
-            href="#"
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-          >
-            <Inbox className="h-5 w-5" />
-            Inbox
-            <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-              6
-            </Badge>
-          </Link>
-          <Link
-            href="#"
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-          >
-            <Calendar className="h-5 w-5" />
-            Today
-          </Link>
-          <Link
-            href="#"
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-          >
-            <CalendarDays className="h-5 w-5" />
-            Upcoming
-          </Link>
+          {navigationItems.map((item, index) => (
+            <NavItem
+              type="mobile"
+              title={item.title}
+              Icon={item.Icon}
+              href={item.href}
+              badgeText={item.badgeText}
+              key={index + 1}
+            />
+          ))}
         </nav>
         <Separator />
         <nav className="grid gap-2 text-lg font-medium">
-          <Link
-            href="#"
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-          >
-            <LineChart className="h-5 w-5" />
-            Analytics
-          </Link>
+          <NavItem
+            type="mobile"
+            title={"Analytics"}
+            Icon={LineChart}
+            href="/analytics"
+          />
         </nav>
-        <div className="mt-auto"></div>
       </SheetContent>
     </Sheet>
-  );
-}
-
-export interface NavItemPropsTypes {
-  type: "mobile" | "other";
-  Icon: LucideIcon;
-  title: string;
-  childComp?: ReactNode;
-}
-
-function NavItem({ type, Icon, title, childComp }: NavItemPropsTypes) {
-  const itemStyleMob = "mx-[-0.65rem] gap-4 rounded-xl  hover:text-foreground";
-
-  const itemStyle = "gap-3 rounded-lg transition-all hover:text-primary";
-  return (
-    <>
-      <Link
-        href="#"
-        className={cn(
-          "flex items-center px-3 py-2 text-muted-foreground",
-          type !== "mobile" ? itemStyle : itemStyleMob,
-        )}
-      >
-        <Icon className={cn(type !== "mobile" ? "h-4 w-4" : "h-5 w-5")} />
-        {title}
-        {childComp}
-      </Link>
-    </>
   );
 }
