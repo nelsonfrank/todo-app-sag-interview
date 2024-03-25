@@ -12,9 +12,7 @@ import { TodoList } from "~/components/todo-list";
 export default async function Page() {
   const todos = await api.todo.getAll();
 
-  const todayTodos = todos.filter(
-    (todo) => todo.dueDate && isToday(todo.dueDate),
-  );
+  const todayTodos = todos.filter((todo) => isToday(todo.dueDate));
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -22,7 +20,7 @@ export default async function Page() {
         <h1 className="text-lg font-semibold md:text-2xl">Today</h1>
       </div>
       <div>
-        <TodoList todos={todos} />
+        <TodoList todos={todayTodos} />
       </div>
       {false && (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
