@@ -19,12 +19,6 @@ export interface TodoListType {
   }[];
 }
 export function TodoList({ todos }: TodoListType) {
-  console.log({ todos });
-  const todayTodos = todos.filter((todo) => {
-    console.log({ isToday: isToday(todo.dueDate) });
-    return todo.dueDate && isToday(todo.dueDate);
-  });
-  console.log({ todayTodos });
 
   const [todoItems, setTodos] = useState(todos);
 
@@ -61,14 +55,3 @@ export function TodoList({ todos }: TodoListType) {
   );
 }
 
-const isToday = (givenDate: Date) => {
-  const providedDate = new Date(givenDate);
-
-  const today = new Date();
-
-  return (
-    today.getFullYear() === providedDate.getFullYear() &&
-    today.getMonth() + 1 === providedDate.getMonth() + 1 &&
-    today.getDate() === providedDate.getDate()
-  );
-};

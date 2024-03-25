@@ -23,7 +23,7 @@ const navigationItems = [
   {
     Icon: Calendar,
     title: "Today",
-    href: "/today",
+    href: "/present-day",
   },
   {
     Icon: CalendarDays,

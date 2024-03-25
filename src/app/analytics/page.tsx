@@ -16,7 +16,8 @@ import {
 import { Overview } from "./overview";
 import { api } from "~/trpc/server";
 import { TodoItem } from "~/components/todo-item";
-import { add, compareAsc, endOfWeek, format, startOfWeek } from "date-fns";
+import { add, compareAsc, endOfWeek, startOfWeek } from "date-fns";
+import { getDayOfWeek } from "~/lib/utils";
 
 export default async function Dashboard() {
   const todos = await api.todo.getAll();
@@ -53,7 +54,7 @@ export default async function Dashboard() {
           ) <= -1,
       )
       .reduce((acc, obj) => {
-        const day = format(new Date(obj.dueDate).toDateString(), "EEEE");
+        const day = getDayOfWeek(new Date(obj.dueDate).toDateString());
 
         // Check if the day already exists in the accumulator object
         if (!acc[day]) {
@@ -128,10 +129,7 @@ export default async function Dashboard() {
               <CardHeader className="flex flex-row items-center">
                 <div className="grid gap-2">
                   <CardTitle>Weekly Overview</CardTitle>
-                  <CardDescription>
-                    This week completed todos - {format(startDate, "PPPP")} -{" "}
-                    {format(endDate, "PP")}
-                  </CardDescription>
+                  <CardDescription>This week completed todos</CardDescription>
                 </div>
               </CardHeader>
               <CardContent>

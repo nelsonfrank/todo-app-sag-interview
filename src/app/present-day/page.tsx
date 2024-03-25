@@ -7,17 +7,29 @@
 // @ts-nocheck
 import { api } from "~/trpc/server";
 import { TodayEmptyState } from "./empty-state";
-import { TodoList, type TodoListType } from "~/components/todo-list";
+import { TodoList } from "~/components/todo-list";
 
 export default async function Page() {
   const todos = await api.todo.getAll();
 
+  if (!todos) return;
+
+  const todayDate = new Date().toLocaleDateString("en-GB");
+
+  const todayTodos = todos.filter(
+    (todo) =>
+      todo.dueDate &&
+      new Date(todo.dueDate).toLocaleDateString("en-GB") === todayDate,
+  );
+
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <main className="flex flex-1 flex-col gap-4 p-4 lg:mx-auto lg:w-2/3 lg:gap-6 lg:p-6">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Today</h1>
       </div>
-      <TodayTodosList todos={todos} />
+      <div>
+        <TodoList todos={todayTodos} />
+      </div>
       {false && (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
           <TodayEmptyState />
@@ -27,24 +39,15 @@ export default async function Page() {
   );
 }
 
-function TodayTodosList({ todos }: TodoListType) {
-  const todayTodos = todos.filter((todo) => isToday(todo.dueDate));
-  return (
-    <div>
-      <TodoList todos={todayTodos} />
-    </div>
-  );
-}
 
+// const isToday = (givenDate: Date) => {
+//   const providedDate = new Date(givenDate);
 
-const isToday = (givenDate: Date) => {
-  const providedDate = new Date(givenDate);
+//   const today = new Date();
 
-  const today = new Date();
-
-  return (
-    today.getFullYear() === providedDate.getFullYear() &&
-    today.getMonth() + 1 === providedDate.getMonth() + 1 &&
-    today.getDate() === providedDate.getDate()
-  );
-};
+//   return (
+//     today.getFullYear() === providedDate.getFullYear() &&
+//     today.getMonth() + 1 === providedDate.getMonth() + 1 &&
+//     today.getDate() === providedDate.getDate()
+//   );
+// };
