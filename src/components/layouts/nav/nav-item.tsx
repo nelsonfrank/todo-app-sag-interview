@@ -21,8 +21,6 @@ export function NavItem({
 }: NavItemPropsTypes) {
   const pathname = usePathname();
 
-  console.log({ pathname });
-
   const itemStyleMob = "mx-[-0.65rem] gap-4 rounded-xl  hover:text-foreground";
   const itemStyle = "gap-3 rounded-lg transition-all hover:text-primary";
   return (
