@@ -7,21 +7,17 @@
 // @ts-nocheck
 import { api } from "~/trpc/server";
 import { TodayEmptyState } from "./empty-state";
-import { TodoList } from "~/components/todo-list";
+import { TodoList, type TodoListType } from "~/components/todo-list";
 
 export default async function Page() {
   const todos = await api.todo.getAll();
-
-  const todayTodos = todos.filter((todo) => isToday(todo.dueDate));
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Today</h1>
       </div>
-      <div>
-        <TodoList todos={todos} />
-      </div>
+      <TodayTodosList todos={todos} />
       {false && (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
           <TodayEmptyState />
@@ -30,6 +26,16 @@ export default async function Page() {
     </main>
   );
 }
+
+function TodayTodosList({ todos }: TodoListType) {
+  const todayTodos = todos.filter((todo) => isToday(todo.dueDate));
+  return (
+    <div>
+      <TodoList todos={todayTodos} />
+    </div>
+  );
+}
+
 
 const isToday = (givenDate: Date) => {
   const providedDate = new Date(givenDate);
