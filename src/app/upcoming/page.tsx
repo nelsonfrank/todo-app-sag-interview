@@ -8,19 +8,13 @@
 // @ts-nocheck
 import { api } from "~/trpc/server";
 import { UpcomingEmptyState } from "./empty-state";
-import { compareAsc } from "date-fns";
+import { isToday, parseISO } from "date-fns";
 import { TodoList } from "~/components/todo-list";
 
 export default async function Page() {
   const todos = await api.todo.getAll();
 
-  const upcomingTodos = todos.filter(
-    (todo) =>
-      compareAsc(
-        new Date().toDateString(),
-        new Date(todo.dueDate).toDateString(),
-      ) === -1,
-  );
+  const upcomingTodos = todos.filter((todo) => isToday(parseISO(todo.dueDate)));
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
