@@ -7,7 +7,6 @@
 // @ts-nocheck
 import { api } from "~/trpc/server";
 import { TodayEmptyState } from "./empty-state";
-import { isToday } from "date-fns";
 import { TodoList } from "~/components/todo-list";
 
 export default async function Page() {
@@ -33,3 +32,15 @@ export default async function Page() {
     </main>
   );
 }
+
+const isToday = (givenDate: Date) => {
+  const providedDate = new Date(givenDate);
+
+  const today = new Date();
+
+  return (
+    today.getFullYear() === providedDate.getFullYear() &&
+    today.getMonth() + 1 === providedDate.getMonth() + 1 &&
+    today.getDate() === providedDate.getDate()
+  );
+};
