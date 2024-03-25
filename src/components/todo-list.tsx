@@ -16,6 +16,7 @@ export interface TodoListType {
   }[];
 }
 export function TodoList({ todos }: TodoListType) {
+  console.log({ todos });
   const [todoItems, setTodos] = useState(todos);
 
   const handleSelectedValue = (priority: "high" | "medium" | "low") => {

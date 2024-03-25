@@ -9,6 +9,7 @@ import { api } from "~/trpc/server";
 import { TodayEmptyState } from "./empty-state";
 import { isToday } from "date-fns";
 import { TodoList } from "~/components/todo-list";
+
 export default async function Page() {
   const todos = await api.todo.getAll();
 
