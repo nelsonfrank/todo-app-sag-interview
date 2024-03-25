@@ -19,7 +19,6 @@ const navigationItems = [
     Icon: Inbox,
     title: "Inbox",
     href: "/inbox",
-    badgeText: "6",
   },
   {
     Icon: Calendar,

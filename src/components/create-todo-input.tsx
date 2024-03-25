@@ -3,16 +3,35 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { TodoInput, type formPayloadType } from "./todo-input";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 
 export function CreateTodoInput() {
   const [openForm, setOpenForm] = useState(false);
+
+  const router = useRouter();
+
+  const createTodo = api.todo.create.useMutation({
+    onSuccess: () => {
+      setOpenForm(false);
+      router.refresh();
+    },
+  });
+
   function onSaveTodo(payload: formPayloadType) {
     console.log(payload);
+    createTodo.mutate(payload);
+  }
+
+  function onCancel() {
     setOpenForm(false);
   }
+
   return (
     <div>
-      {openForm && <TodoInput handleOnSubmit={onSaveTodo} />}
+      {openForm && (
+        <TodoInput handleOnSubmit={onSaveTodo} handleCancel={onCancel} />
+      )}
 
       {!openForm && (
         <div>

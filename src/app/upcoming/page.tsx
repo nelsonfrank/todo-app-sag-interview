@@ -1,14 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { api } from "~/trpc/server";
 import { UpcomingEmptyState } from "./empty-state";
+import { compareAsc } from "date-fns";
+import { TodoList, type TodoListType } from "~/components/todo-list";
 
 export default async function Page() {
+  const todos = await api.todo.getAll();
+
+  const upcomingTodos = todos.filter(
+    (todo) =>
+      todo.dueDate &&
+      compareAsc(new Date().getDate(), new Date(todo.dueDate).getDate()) === -1,
+  );
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Upcoming</h1>
       </div>
-      <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-        <UpcomingEmptyState />
+      <div>
+        <TodoList todos={upcomingTodos} />
       </div>
+      {false && (
+        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+          <UpcomingEmptyState />
+        </div>
+      )}
     </main>
   );
 }

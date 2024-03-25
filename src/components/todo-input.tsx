@@ -18,9 +18,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { cn } from "~/lib/utils";
-
+import { sub } from "date-fns";
 export interface TodoInputProps {
   handleOnSubmit: (payload: formPayloadType) => void;
+  handleCancel: () => void;
+  defaultValues?: formPayloadType;
 }
 
 const FormSchema = z.object({
@@ -31,15 +33,27 @@ const FormSchema = z.object({
 
 export type formPayloadType = z.infer<typeof FormSchema>;
 
-export function TodoInput({ handleOnSubmit }: TodoInputProps) {
+export function TodoInput({
+  handleOnSubmit,
+  handleCancel,
+  defaultValues,
+}: TodoInputProps) {
   const form = useForm<formPayloadType>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      todo: defaultValues?.todo,
+      dueDate: defaultValues?.dueDate,
+      priority: defaultValues?.priority,
+    },
   });
 
   function onSubmit(data: formPayloadType) {
     handleOnSubmit(data);
   }
 
+  function onCancel() {
+    handleCancel();
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -82,7 +96,9 @@ export function TodoInput({ handleOnSubmit }: TodoInputProps) {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
+                        disabled={(date) =>
+                          date <= sub(new Date(), { days: 1 })
+                        }
                         initialFocus
                       />
                     </PopoverContent>
@@ -137,7 +153,7 @@ export function TodoInput({ handleOnSubmit }: TodoInputProps) {
           </div>
           <Separator />
           <div className="flex justify-end gap-4 px-2 py-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={onCancel} type="button">
               <span className="mx-2">Cancel</span>
             </Button>
             <Button
