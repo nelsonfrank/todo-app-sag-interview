@@ -14,8 +14,10 @@ export default async function Page() {
 
   const todayTodos = todos.filter(
     (todo) =>
-      todo.dueDate &&
-      compareAsc(new Date().getDate(), new Date(todo.dueDate).getDate()) === 0,
+      compareAsc(
+        new Date().toDateString(),
+        new Date(todo.dueDate).toDateString(),
+      ) === 0,
   );
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">

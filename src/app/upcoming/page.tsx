@@ -9,15 +9,17 @@
 import { api } from "~/trpc/server";
 import { UpcomingEmptyState } from "./empty-state";
 import { compareAsc } from "date-fns";
-import { TodoList, type TodoListType } from "~/components/todo-list";
+import { TodoList } from "~/components/todo-list";
 
 export default async function Page() {
   const todos = await api.todo.getAll();
 
   const upcomingTodos = todos.filter(
     (todo) =>
-      todo.dueDate &&
-      compareAsc(new Date().getDate(), new Date(todo.dueDate).getDate()) === -1,
+      compareAsc(
+        new Date().toDateString(),
+        new Date(todo.dueDate).toDateString(),
+      ) === -1,
   );
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
