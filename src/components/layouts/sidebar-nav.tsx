@@ -42,7 +42,6 @@ export function MainSideBar() {
             title={item.title}
             Icon={item.Icon}
             href={item.href}
-            badgeText={item.badgeText}
             key={index + 1}
           />
         ))}
@@ -84,7 +83,6 @@ export function MobileSideBarNav() {
               title={item.title}
               Icon={item.Icon}
               href={item.href}
-              badgeText={item.badgeText}
               key={index + 1}
             />
           ))}
