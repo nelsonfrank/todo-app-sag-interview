@@ -8,6 +8,7 @@
 import { api } from "~/trpc/server";
 import { TodayEmptyState } from "./empty-state";
 import { TodoList } from "~/components/todo-list";
+import { reparseDate } from "~/lib/utils";
 
 export default async function Page() {
   const todos = await api.todo.getAll();
@@ -19,7 +20,8 @@ export default async function Page() {
   const todayTodos = todos.filter(
     (todo) =>
       todo.dueDate &&
-      new Date(todo.dueDate).toLocaleDateString("en-GB") === todayDate,
+      new Date(reparseDate(todo.dueDate)).toLocaleDateString("en-GB") ===
+        todayDate,
   );
 
   return (

@@ -26,7 +26,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { format } from "date-fns";
-import { cn } from "~/lib/utils";
+import { cn, reparseDate } from "~/lib/utils";
 export interface TodoItemProps {
   todo: string;
   priority: "low" | "medium" | "high";
@@ -98,7 +98,7 @@ export function TodoItem({ todoItem }: TodoItemType) {
           <div className="flex gap-8">
             {todoItem.dueDate && (
               <p className="text-xs text-destructive">
-                {format(todoItem.dueDate, "PPP")}
+                {format(reparseDate(todoItem.dueDate), "PPP")}
               </p>
             )}
             {todoItem.priority && (

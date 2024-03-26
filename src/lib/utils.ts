@@ -25,3 +25,6 @@ export function getDayOfWeek(dateString: string) {
   // Return the corresponding day of the week from the array
   return daysOfWeek[dayOfWeekIndex];
 }
+
+export const reparseDate = (date: Date) =>
+  date.toLocaleString("en-US", { timeZone: "Africa/Dar_es_Salaam" });

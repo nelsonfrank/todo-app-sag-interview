@@ -18,6 +18,7 @@ import { api } from "~/trpc/server";
 import { TodoItem } from "~/components/todo-item";
 import { add, compareAsc, endOfWeek, startOfWeek } from "date-fns";
 import { getDayOfWeek } from "~/lib/utils";
+import { reparseDate } from "~/lib/utils";
 
 export default async function Dashboard() {
   const todos = await api.todo.getAll();
@@ -25,7 +26,7 @@ export default async function Dashboard() {
   const totalCompletedTodos = todos.filter((todo) => todo.isComplete);
   const totalPendingTodos = todos.filter((todo) => !todo.isComplete);
 
-  const currentDate = new Date();
+  const currentDate = reparseDate(new Date());
   const startDate = startOfWeek(currentDate, { weekStartsOn: 0 }); // Week starts on Monday (0 for Sunday, 1 for Monday, etc.)
   const endDate = endOfWeek(currentDate, { weekStartsOn: 0 });
 
@@ -45,16 +46,18 @@ export default async function Dashboard() {
         (todo) =>
           todo.dueDate &&
           compareAsc(
-            new Date(todo.dueDate).getDate(),
+            new Date(reparseDate(todo.dueDate)).getDate(),
             new Date(startDate).getDate(),
           ) >= 1 &&
           compareAsc(
-            new Date(todo.dueDate).getDate(),
+            new Date(reparseDate(todo.dueDate)).getDate(),
             new Date(add(endDate, { days: 1 })).getDate(),
           ) <= -1,
       )
       .reduce((acc, obj) => {
-        const day = getDayOfWeek(new Date(obj.dueDate).toDateString());
+        const day = getDayOfWeek(
+          new Date(reparseDate(obj.dueDate)).toDateString(),
+        );
 
         // Check if the day already exists in the accumulator object
         if (!acc[day]) {

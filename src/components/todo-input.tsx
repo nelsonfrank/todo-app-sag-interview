@@ -17,7 +17,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { cn } from "~/lib/utils";
+import { cn, reparseDate } from "~/lib/utils";
 import { sub } from "date-fns";
 export interface TodoInputProps {
   handleOnSubmit: (payload: formPayloadType) => void;
@@ -84,7 +84,7 @@ export function TodoInput({
                         <CalendarIcon className="h-4 w-4" />
                         {field.value ? (
                           <span className="ml-2">
-                            {format(field.value, "PPP")}
+                            {format(reparseDate(field.value), "PPP")}
                           </span>
                         ) : (
                           <span className="ml-2">Due date</span>
