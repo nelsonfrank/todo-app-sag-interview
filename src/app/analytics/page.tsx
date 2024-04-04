@@ -16,7 +16,7 @@ import {
 import { Overview } from "./overview";
 import { api } from "~/trpc/server";
 import { TodoItem } from "~/components/todo-item";
-import { add, compareAsc, endOfWeek, startOfWeek } from "date-fns";
+import { add, compareAsc, format, endOfWeek, startOfWeek } from "date-fns";
 import { getDayOfWeek } from "~/lib/utils";
 import { reparseDate } from "~/lib/utils";
 
@@ -132,7 +132,10 @@ export default async function Dashboard() {
               <CardHeader className="flex flex-row items-center">
                 <div className="grid gap-2">
                   <CardTitle>Weekly Overview</CardTitle>
-                  <CardDescription>This week completed todos</CardDescription>
+                  <CardDescription>
+                    This week completed todos - {format(startDate, "PPP")} -{" "}
+                    {format(endDate, "PPP")}
+                  </CardDescription>
                 </div>
               </CardHeader>
               <CardContent>
