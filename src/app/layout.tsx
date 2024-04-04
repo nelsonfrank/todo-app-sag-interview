@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SiteLayout } from "~/components/layouts";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <SiteLayout>{children}</SiteLayout>
         </TRPCReactProvider>
+        <Analytics />
       </body>
     </html>
   );
